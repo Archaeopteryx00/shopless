@@ -6,10 +6,22 @@ import { useParams, useRouter } from 'next/navigation';
 import { useOrders } from '@/presentation/hooks/useOrders';
 import { useReflections } from '@/presentation/hooks/useReflections';
 import { ShippingTimeline } from '@/presentation/components/shipping/ShippingTimeline';
-import { SpeedToggle } from '@/presentation/components/shipping/SpeedToggle';
+import { SpeedMenu } from '@/presentation/components/shipping/SpeedMenu';
 import { ProductImage } from '@/presentation/components/marketplace/ProductImage';
 import { formatIDR } from '@/presentation/components/marketplace/ProductCard';
-import { ArrowLeft, MapPin, CreditCard, CheckCircle2, Calendar, Sparkles, MessageSquare } from 'lucide-react';
+import { getMarketplaceStatus } from '@/presentation/utils/orderStatus';
+import {
+  ArrowLeft,
+  MapPin,
+  CreditCard,
+  CheckCircle2,
+  Calendar,
+  Sparkles,
+  MessageSquare,
+  Truck,
+  Box,
+  Clock,
+} from 'lucide-react';
 
 export default function OrderDetailPage() {
   const params = useParams();
@@ -38,6 +50,7 @@ export default function OrderDetailPage() {
   }
 
   const { order, status } = item;
+  const mpStatus = getMarketplaceStatus(status.currentStage.key);
 
   const getReflectionBadgeText = () => {
     if (!reflection) return null;
@@ -48,33 +61,56 @@ export default function OrderDetailPage() {
   };
 
   return (
-    <div className="flex flex-col gap-5 pb-8 animate-fadeIn">
-      {/* Header Back Button */}
+    <div className="flex flex-col gap-4 pb-8 animate-fadeIn">
+      {/* Header Back Button & Speed Menu */}
       <div className="flex items-center justify-between">
         <button
           type="button"
           onClick={() => router.push('/orders')}
-          className="p-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-slate-900 shadow-xs transition-colors flex items-center gap-1 text-xs font-semibold"
+          className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-slate-900 shadow-xs transition-colors flex items-center gap-1 text-xs font-semibold"
         >
           <ArrowLeft className="w-4 h-4" /> Kembali
         </button>
 
-        <span
-          className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${
-            status.isDelivered
-              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-              : 'bg-blue-50 text-blue-700 border-blue-200'
-          }`}
-        >
-          Pesanan #{order.id}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-bold text-slate-700 bg-white px-2.5 py-1 rounded-full border border-slate-200 shadow-xs">
+            Pesanan #{order.id}
+          </span>
+          <SpeedMenu
+            currentMultiplier={speedMultiplier}
+            onSelectMultiplier={changeSpeedMultiplier}
+          />
+        </div>
       </div>
 
-      {/* Speed Time-Warp Controls */}
-      <SpeedToggle
-        currentMultiplier={speedMultiplier}
-        onSelectMultiplier={changeSpeedMultiplier}
-      />
+      {/* Main Status Summary Card */}
+      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col gap-2.5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span
+              className={`flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full border ${mpStatus.badgeClass}`}
+            >
+              {mpStatus.key === 'selesai' ? (
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              ) : mpStatus.key === 'dikirim' ? (
+                <Truck className="w-3.5 h-3.5 text-indigo-600" />
+              ) : (
+                <Box className="w-3.5 h-3.5 text-blue-600" />
+              )}
+              <span>Status: {mpStatus.label}</span>
+            </span>
+          </div>
+
+          <span className="text-[11px] text-slate-500 font-medium flex items-center gap-1">
+            <Clock className="w-3.5 h-3.5 text-blue-600" />
+            {status.estimatedTimeRemainingText}
+          </span>
+        </div>
+
+        <p className="text-xs text-slate-600 leading-relaxed pt-1 border-t border-slate-100">
+          {status.currentStage.description}
+        </p>
+      </div>
 
       {/* Delivered Notification & Reflection Action Banner */}
       {status.isDelivered && (
@@ -84,7 +120,7 @@ export default function OrderDetailPage() {
             <div>
               <h3 className="text-xs font-bold text-emerald-900">Pesanan Sudah Sampai!</h3>
               <p className="text-[11px] text-emerald-700 mt-0.5">
-                Paket kamu sudah diterima setelah waktu jeda 24 jam.
+                Paket kamu telah diserahterimakan dan sudah sampai di lokasi tujuan.
               </p>
             </div>
           </div>
@@ -127,7 +163,7 @@ export default function OrderDetailPage() {
         </div>
       )}
 
-      {/* 8-Stage Interactive Shipping Timeline */}
+      {/* 8-Stage Interactive Shipping Timeline (Secondary Detail View) */}
       <ShippingTimeline status={status} />
 
       {/* Shipping & Payment Meta Box */}
@@ -173,11 +209,11 @@ export default function OrderDetailPage() {
         <div className="flex flex-col gap-3">
           {order.items.map((item) => (
             <div key={item.productId} className="flex gap-3 items-center pt-2 border-t border-slate-100 first:pt-0 first:border-0">
-              <div className="w-12 h-12 shrink-0">
+              <div className="w-12 h-12 shrink-0 rounded-lg overflow-hidden border border-slate-100">
                 <ProductImage
                   category={item.category as any}
                   name={item.name}
-                  className="w-full h-full"
+                  className="w-full h-full object-cover"
                   size="sm"
                 />
               </div>

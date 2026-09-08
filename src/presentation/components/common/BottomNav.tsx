@@ -9,13 +9,17 @@ import { ShoplessLogo } from './ShoplessLogo';
 
 export function BottomNav() {
   const pathname = usePathname();
-  const { deliveredOrdersCount } = useOrders();
+  const { ordersWithStatus } = useOrders();
+
+  const activeOrdersCount = ordersWithStatus.length;
+  const activeShippingCount = ordersWithStatus.filter((o) => !o.status.isDelivered).length;
+  const showBadge = activeOrdersCount > 0;
 
   const navItems = [
     { href: '/', label: 'Beranda', isLogo: true },
     { href: '/shop', label: 'Jelajah', icon: Compass },
     { href: '/wishlist', label: 'Wishlist', icon: Heart },
-    { href: '/orders', label: 'Pesanan', icon: Package, badge: deliveredOrdersCount },
+    { href: '/orders', label: 'Pesanan', icon: Package, badge: showBadge },
     { href: '/insights', label: 'Ringkasan', icon: BarChart2 },
   ];
 
@@ -44,8 +48,12 @@ export function BottomNav() {
                 <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.2px]' : 'stroke-[1.75px]'}`} />
               ) : null}
               <span className="text-[10px] tracking-tight">{item.label}</span>
-              {item.badge && item.badge > 0 ? (
-                <span className="absolute top-1 right-2.5 w-2 h-2 rounded-full bg-emerald-500 border border-white animate-pulse" />
+              {item.badge ? (
+                <span
+                  className={`absolute top-1 right-2.5 w-2 h-2 rounded-full border border-white ${
+                    activeShippingCount > 0 ? 'bg-rose-500 animate-pulse' : 'bg-emerald-500'
+                  }`}
+                />
               ) : null}
             </Link>
           );
