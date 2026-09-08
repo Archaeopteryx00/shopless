@@ -341,10 +341,13 @@ export default function CartPage() {
               type="button"
               disabled={isSubmitting}
               onClick={handlePlaceOrder}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-lg shadow-md flex items-center justify-center gap-2 text-xs tracking-wide transition-all"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-75 disabled:cursor-wait text-white font-bold py-3.5 px-4 rounded-lg shadow-md flex items-center justify-center gap-2 text-xs tracking-wide transition-all"
             >
               {isSubmitting ? (
-                <span>Memproses Pesanan...</span>
+                <>
+                  <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Memproses Pesanan...</span>
+                </>
               ) : (
                 <>
                   <CheckCircle2 className="w-4 h-4" />

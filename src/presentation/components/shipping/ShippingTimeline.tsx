@@ -84,15 +84,15 @@ export function ShippingTimeline({ status }: ShippingTimelineProps) {
               </div>
 
               {/* Stage Text */}
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <h4
-                    className={`text-xs font-semibold ${
+                    className={`text-xs transition-colors duration-300 ${
                       isCompleted
-                        ? 'text-slate-800'
+                        ? 'text-slate-800 font-semibold'
                         : isCurrent
                         ? 'text-blue-600 font-bold'
-                        : 'text-slate-400'
+                        : 'text-slate-400 font-semibold'
                     }`}
                   >
                     {stage.label}

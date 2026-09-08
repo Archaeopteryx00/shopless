@@ -53,6 +53,47 @@ body {
   }
 }
 
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+@keyframes imagePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
 .animate-fadeIn {
-  animation: fadeIn 0.25s ease-out forwards;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.animate-pop {
+  animation: pop 0.35s ease-out forwards;
+}
+
+.animate-heartPop {
+  animation: heartPop 0.25s ease-out forwards;
+}
+
+.animate-imagePulse {
+  animation: imagePulse 0.4s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fadeIn,
+  .animate-pop,
+  .animate-heartPop,
+  .animate-imagePulse,
+  .animate-pulse {
+    animation: none !important;
+    transition: none !important;
+  }
 }

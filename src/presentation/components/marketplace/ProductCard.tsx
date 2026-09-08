@@ -40,14 +40,14 @@ export function ProductCard({ product, isWishlisted = false, onToggleWishlist }:
           e.stopPropagation();
           onToggleWishlist?.(product.id);
         }}
-        className={`absolute top-3 right-3 z-20 p-1.5 rounded-full transition-all duration-200 ${
+        className={`absolute top-3 right-3 z-20 p-1.5 rounded-full transition-all duration-200 active:scale-125 ${
           isWishlisted
             ? 'bg-rose-50 text-rose-600 border border-rose-200'
             : 'bg-white/90 text-slate-400 hover:text-rose-500 border border-slate-200 shadow-xs'
         }`}
         aria-label="Simpan Wishlist"
       >
-        <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-current' : ''}`} />
+        <Heart className={`w-3.5 h-3.5 transition-transform ${isWishlisted ? 'fill-current' : ''}`} />
       </button>
 
       <Link href={`/shop/${product.id}`} className="flex flex-col h-full">

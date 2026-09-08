@@ -8,7 +8,7 @@ import { useRepositories } from '@/infrastructure/db/RepositoryContext';
 import { ProductImage } from '@/presentation/components/marketplace/ProductImage';
 import { formatIDR } from '@/presentation/components/marketplace/ProductCard';
 import { Toast } from '@/presentation/components/common/Toast';
-import { ArrowLeft, Heart, Star, ShoppingCart, Plus, Minus, Tag } from 'lucide-react';
+import { ArrowLeft, Heart, Star, ShoppingCart, Plus, Minus, Tag, Check } from 'lucide-react';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -25,6 +25,7 @@ export default function ProductDetailPage() {
   const [whyWanted, setWhyWanted] = useState<string>('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<'success' | 'wishlist'>('success');
+  const [addState, setAddState] = useState<'idle' | 'adding' | 'added'>('idle');
 
   const handleBack = () => {
     if (typeof window !== 'undefined' && window.history.length > 2) {
@@ -54,14 +55,18 @@ export default function ProductDetailPage() {
     : null;
 
   const handleAddToCart = async () => {
+    if (addState !== 'idle') return;
+    setAddState('adding');
     await cartRepo.addItem({
       productId: product.id,
       quantity,
       whyWanted: whyWanted || undefined,
     });
+    setAddState('added');
     setToastType('success');
     setToastMessage('Berhasil ditambah ke keranjang!');
     setTimeout(() => setToastMessage(null), 2500);
+    setTimeout(() => setAddState('idle'), 1500);
   };
 
   const handleToggleWishlist = async () => {
@@ -109,11 +114,13 @@ export default function ProductDetailPage() {
       </div>
 
       {/* Product Image */}
-      <div className="w-full aspect-square relative">
+      <div className="w-full aspect-square relative overflow-hidden rounded-xl">
         <ProductImage
           category={product.category}
           name={product.name}
-          className="w-full h-full shadow-sm"
+          className={`w-full h-full shadow-sm transition-transform duration-300 ${
+            addState === 'adding' ? 'animate-imagePulse scale-105' : ''
+          }`}
           size="xl"
         />
         {discountPercent && (
@@ -215,11 +222,32 @@ export default function ProductDetailPage() {
 
           <button
             type="button"
+            disabled={addState !== 'idle'}
             onClick={handleAddToCart}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-3.5 px-4 rounded-lg shadow-md flex items-center justify-center gap-2 text-xs transition-all"
+            className={`flex-1 font-bold py-3.5 px-4 rounded-lg shadow-md flex items-center justify-center gap-2 text-xs transition-all ${
+              addState === 'added'
+                ? 'bg-emerald-600 text-white'
+                : addState === 'adding'
+                ? 'bg-blue-700 text-white opacity-90 cursor-wait'
+                : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white'
+            }`}
           >
-            <ShoppingCart className="w-4 h-4" />
-            <span>Tambah ke Keranjang</span>
+            {addState === 'added' ? (
+              <>
+                <Check className="w-4 h-4 text-white" />
+                <span>Ditambahkan</span>
+              </>
+            ) : addState === 'adding' ? (
+              <>
+                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span>Menambahkan...</span>
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="w-4 h-4" />
+                <span>Tambah ke Keranjang</span>
+              </>
+            )}
           </button>
         </div>
       </div>

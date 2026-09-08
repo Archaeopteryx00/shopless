@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '@/presentation/hooks/useCart';
@@ -8,6 +8,17 @@ import { ShoplessLogo } from './ShoplessLogo';
 
 export function Header() {
   const { itemCount } = useCart();
+  const [isPopping, setIsPopping] = useState(false);
+  const prevCount = useRef(itemCount);
+
+  useEffect(() => {
+    if (itemCount > prevCount.current) {
+      setIsPopping(true);
+      const timer = setTimeout(() => setIsPopping(false), 400);
+      return () => clearTimeout(timer);
+    }
+    prevCount.current = itemCount;
+  }, [itemCount]);
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-xs">
@@ -30,7 +41,11 @@ export function Header() {
         >
           <ShoppingCart className="w-5 h-5 text-slate-700" />
           {itemCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full min-w-[18px] text-center shadow-xs">
+            <span
+              className={`absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full min-w-[18px] text-center shadow-xs ${
+                isPopping ? 'animate-pop' : ''
+              }`}
+            >
               {itemCount}
             </span>
           )}

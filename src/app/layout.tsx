@@ -58,7 +58,7 @@ export default function RootLayout({
         <RepositoryProvider>
           <div className="w-full max-w-md mx-auto min-h-screen flex flex-col bg-[#f7f8fa] border-x border-slate-200 shadow-md relative pb-20 overflow-x-hidden">
             <Header />
-            <main className="flex-1 px-4 py-3">{children}</main>
+            <main className="flex-1 px-4 py-3 animate-fadeIn">{children}</main>
             <PwaInstallPrompt />
             <BottomNav />
           </div>
