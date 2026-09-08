@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
 import { useRepositories } from '@/infrastructure/db/RepositoryContext';
 import { CartItem } from '@/domain/models/Cart';
 import { OrderItem } from '@/domain/models/Order';
 import { staticCatalog } from '@/infrastructure/catalog/staticCatalog';
 import { Product } from '@/domain/models/Product';
+import { db } from '@/infrastructure/db/dexie/ShoplessDexieDB';
 
 export interface DetailedCartItem {
   cartItem: CartItem;
@@ -15,26 +17,20 @@ export interface DetailedCartItem {
 
 export function useCart() {
   const { cart: cartRepo, order: orderRepo, session: sessionRepo } = useRepositories();
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  const loadCart = useCallback(async () => {
-    try {
-      setLoading(true);
-      const items = await cartRepo.getCart();
-      setCartItems(items);
-    } catch (err) {
-      console.error('Failed to load cart:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [cartRepo]);
+  // Reactive Dexie IndexedDB live query
+  const cartItems = useLiveQuery(
+    async () => {
+      return await db.cart.toArray();
+    },
+    [],
+    [] // Default fallback array while loading
+  );
 
-  useEffect(() => {
-    loadCart();
-  }, [loadCart]);
+  const loading = cartItems === undefined;
 
   const detailedItems: DetailedCartItem[] = useMemo(() => {
+    if (!cartItems) return [];
     return cartItems
       .map((item) => {
         const product = staticCatalog.getProductById(item.productId);
@@ -53,22 +49,20 @@ export function useCart() {
   }, [detailedItems]);
 
   const itemCount = useMemo(() => {
+    if (!cartItems) return 0;
     return cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
   }, [cartItems]);
 
   const updateQuantity = async (productId: string, quantity: number) => {
     await cartRepo.updateQuantity(productId, quantity);
-    await loadCart();
   };
 
   const removeItem = async (productId: string) => {
     await cartRepo.removeItem(productId);
-    await loadCart();
   };
 
   const clearCart = async () => {
     await cartRepo.clearCart();
-    await loadCart();
   };
 
   const placeSimulatedOrder = async () => {
@@ -111,6 +105,5 @@ export function useCart() {
     removeItem,
     clearCart,
     placeSimulatedOrder,
-    refreshCart: loadCart,
   };
 }

@@ -24,6 +24,14 @@ export default function ProductDetailPage() {
   const [whyWanted, setWhyWanted] = useState<string>('');
   const [addedToast, setAddedToast] = useState(false);
 
+  const handleBack = () => {
+    if (typeof window !== 'undefined' && window.history.length > 2) {
+      router.back();
+    } else {
+      router.push('/shop');
+    }
+  };
+
   if (!product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-center gap-3">
@@ -67,7 +75,7 @@ export default function ProductDetailPage() {
       <div className="flex items-center justify-between">
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={handleBack}
           className="p-2 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:text-white transition-colors flex items-center gap-1 text-xs"
         >
           <ArrowLeft className="w-4 h-4" /> Back
