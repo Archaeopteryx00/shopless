@@ -53,6 +53,14 @@ export function PwaInstallPrompt() {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
+      
+      const dismissed = localStorage.getItem('shopless_pwa_dismissed');
+      if (dismissed) {
+        const now = Date.now();
+        if (now - parseInt(dismissed, 10) < 3 * 24 * 60 * 60 * 1000) {
+          return;
+        }
+      }
       setIsVisible(true);
     };
 
