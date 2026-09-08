@@ -4,10 +4,12 @@ import React from 'react';
 import Link from 'next/link';
 import { useProducts } from '@/presentation/hooks/useProducts';
 import { useWishlist } from '@/presentation/hooks/useWishlist';
+import { useSession } from '@/presentation/hooks/useSession';
 import { HeroBanner } from '@/presentation/components/marketplace/HeroBanner';
 import { SearchBar } from '@/presentation/components/marketplace/SearchBar';
 import { CategoryPills } from '@/presentation/components/marketplace/CategoryPills';
 import { ProductCard } from '@/presentation/components/marketplace/ProductCard';
+import { TriggerModal } from '@/presentation/components/marketplace/TriggerModal';
 import { Flame, Sparkles, ArrowRight, Layers } from 'lucide-react';
 
 export default function HomePage() {
@@ -22,11 +24,19 @@ export default function HomePage() {
     forYou,
   } = useProducts();
   const { isWishlisted, toggleWishlist } = useWishlist();
+  const { showTriggerModal, selectTrigger, skipTrigger } = useSession();
 
   const isSearchingOrFiltering = searchQuery.trim() !== '' || category !== 'All';
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Shopping Motivation Trigger Modal */}
+      <TriggerModal
+        isOpen={showTriggerModal}
+        onSelectTrigger={selectTrigger}
+        onSkip={skipTrigger}
+      />
+
       {/* Top Search Bar */}
       <SearchBar value={searchQuery} onChange={setSearchQuery} />
 
