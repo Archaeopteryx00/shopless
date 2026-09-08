@@ -1,11 +1,11 @@
 {
-  "name": "Shopless - Shop Without Spending",
+  "name": "Shopless - Belanja Tanpa Uang Sungguhan",
   "short_name": "Shopless",
-  "description": "Simulated e-commerce experience to explore shopping urges without spending real money.",
+  "description": "Simulasi e-commerce lokal untuk eksplorasi dorongan belanja tanpa uang sungguhan.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#F7F8FA",
+  "theme_color": "#2563EB",
   "icons": [
     {
       "src": "/icons/icon-192.png",

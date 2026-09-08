@@ -12,6 +12,7 @@ import { CategoryPills } from '@/presentation/components/marketplace/CategoryPil
 import { ProductCard } from '@/presentation/components/marketplace/ProductCard';
 import { TriggerModal } from '@/presentation/components/marketplace/TriggerModal';
 import { DeliveryBanner } from '@/presentation/components/shipping/DeliveryBanner';
+import { ProductGridSkeleton } from '@/presentation/components/common/Skeletons';
 import { Flame, Sparkles, ArrowRight, Layers } from 'lucide-react';
 
 export default function HomePage() {
@@ -32,7 +33,7 @@ export default function HomePage() {
   const isSearchingOrFiltering = searchQuery.trim() !== '' || category !== 'All';
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-5 pb-6">
       {/* Shopping Motivation Trigger Modal */}
       <TriggerModal
         isOpen={showTriggerModal}
@@ -51,9 +52,9 @@ export default function HomePage() {
 
       {/* Category Pills */}
       <div>
-        <div className="flex items-center justify-between mb-2.5">
-          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-            Categories
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+            Kategori
           </h3>
         </div>
         <CategoryPills activeCategory={category} onSelectCategory={setCategory} />
@@ -63,25 +64,25 @@ export default function HomePage() {
       {isSearchingOrFiltering ? (
         <section>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-bold text-slate-100 flex items-center gap-1.5">
-              <Layers className="w-4 h-4 text-blue-400" />
+            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-blue-600" />
               <span>
-                {category !== 'All' ? category : 'Search Results'} ({filteredProducts.length})
+                {category !== 'All' ? category : 'Hasil Pencarian'} ({filteredProducts.length})
               </span>
             </h2>
           </div>
           {filteredProducts.length === 0 ? (
-            <div className="glass-panel rounded-2xl p-8 text-center text-slate-400 my-4">
-              <p className="text-sm">No products found matching your search.</p>
+            <div className="bg-white rounded-2xl p-8 text-center text-slate-500 my-3 border border-slate-200 shadow-xs">
+              <p className="text-sm">Barang tidak ditemukan.</p>
               <button
                 type="button"
                 onClick={() => {
                   setSearchQuery('');
                   setCategory('All');
                 }}
-                className="mt-3 text-xs text-blue-400 font-semibold hover:underline"
+                className="mt-3 text-xs text-blue-600 font-semibold hover:underline"
               >
-                Clear filters
+                Reset pencarian
               </button>
             </div>
           ) : (
@@ -99,15 +100,15 @@ export default function HomePage() {
         </section>
       ) : (
         <>
-          {/* Deals Section */}
+          {/* Lagi Diskon */}
           <section>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-bold text-slate-100 flex items-center gap-1.5">
-                <Flame className="w-4 h-4 text-rose-500" />
-                <span>Simulated Deals</span>
+            <div className="flex items-center justify-between mb-2.5">
+              <h2 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <Flame className="w-4 h-4 text-rose-600" />
+                <span>Lagi Diskon</span>
               </h2>
-              <Link href="/shop" className="text-xs text-blue-400 hover:text-blue-300 font-medium flex items-center gap-0.5">
-                See all <ArrowRight className="w-3 h-3" />
+              <Link href="/shop" className="text-xs text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-0.5">
+                Lihat Semua <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -122,12 +123,12 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Popular Section */}
+          {/* Banyak Dilihat */}
           <section>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-bold text-slate-100 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-amber-400" />
-                <span>Most Browsed</span>
+            <div className="flex items-center justify-between mb-2.5">
+              <h2 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-amber-500" />
+                <span>Banyak Dilihat</span>
               </h2>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -142,10 +143,10 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* For You Grid */}
-          <section className="mb-4">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-bold text-slate-100">For You</h2>
+          {/* Pilihan Buat Kamu */}
+          <section className="mb-2">
+            <div className="flex items-center justify-between mb-2.5">
+              <h2 className="text-sm font-bold text-slate-900">Pilihan Buat Kamu</h2>
             </div>
             <div className="grid grid-cols-2 gap-3">
               {forYou.map((product) => (

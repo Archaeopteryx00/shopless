@@ -6,7 +6,7 @@ import { useWishlist } from '@/presentation/hooks/useWishlist';
 import { SearchBar } from '@/presentation/components/marketplace/SearchBar';
 import { CategoryPills } from '@/presentation/components/marketplace/CategoryPills';
 import { ProductCard } from '@/presentation/components/marketplace/ProductCard';
-import { ShoppingBag } from 'lucide-react';
+import { Compass } from 'lucide-react';
 
 export default function ShopPage() {
   const {
@@ -19,10 +19,10 @@ export default function ShopPage() {
   const { isWishlisted, toggleWishlist } = useWishlist();
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 pb-6">
       <div className="flex items-center gap-2">
-        <ShoppingBag className="w-5 h-5 text-blue-400" />
-        <h1 className="text-lg font-bold text-slate-100">Browse Marketplace</h1>
+        <Compass className="w-5 h-5 text-blue-600" />
+        <h1 className="text-lg font-bold text-slate-900">Jelajah Katalog</h1>
       </div>
 
       {/* Search Bar */}
@@ -32,28 +32,28 @@ export default function ShopPage() {
       <CategoryPills activeCategory={category} onSelectCategory={setCategory} />
 
       {/* Products Count Header */}
-      <div className="flex items-center justify-between text-xs text-slate-400">
-        <span>Showing {filteredProducts.length} items</span>
+      <div className="flex items-center justify-between text-xs text-slate-500">
+        <span>Menampilkan {filteredProducts.length} barang</span>
         {category !== 'All' && (
-          <span className="bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-md border border-blue-500/20 font-medium">
-            Category: {category}
+          <span className="bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-200 font-medium">
+            Kategori: {category}
           </span>
         )}
       </div>
 
       {/* Products Grid */}
       {filteredProducts.length === 0 ? (
-        <div className="glass-panel rounded-2xl p-10 text-center text-slate-400">
-          <p className="text-sm">No items found matching your criteria.</p>
+        <div className="bg-white rounded-2xl p-10 text-center text-slate-500 border border-slate-200 shadow-xs">
+          <p className="text-sm">Tidak ada barang yang sesuai pencarian.</p>
           <button
             type="button"
             onClick={() => {
               setSearchQuery('');
               setCategory('All');
             }}
-            className="mt-3 text-xs text-blue-400 font-semibold hover:underline"
+            className="mt-3 text-xs text-blue-600 font-semibold hover:underline"
           >
-            Reset Filters
+            Reset Filter
           </button>
         </div>
       ) : (

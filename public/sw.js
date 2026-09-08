@@ -1,6 +1,11 @@
-const CACHE_NAME = 'shopless-v1';
+const CACHE_NAME = 'shopless-v2';
 const STATIC_ASSETS = [
   '/',
+  '/shop',
+  '/cart',
+  '/wishlist',
+  '/orders',
+  '/insights',
   '/manifest.json',
   '/favicon.ico',
 ];
@@ -30,10 +35,9 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Navigation & Static Asset caching strategy
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match('/'))
+      fetch(event.request).catch(() => caches.match(event.request) || caches.match('/'))
     );
     return;
   }

@@ -21,59 +21,59 @@ export interface ShippingStageInfo {
 export const SHIPPING_STAGES: ShippingStageInfo[] = [
   {
     key: 'confirmed',
-    label: 'Order Confirmed',
+    label: 'Pesanan dibuat',
     minHours: 0,
     maxHours: 1,
-    description: 'Order placed & confirmed by merchant.',
+    description: 'Pesanan telah berhasil dibuat dan dikonfirmasi penjual.',
   },
   {
     key: 'preparing',
-    label: 'Preparing',
+    label: 'Sedang diproses',
     minHours: 1,
     maxHours: 2,
-    description: 'Merchant is carefully packing your item.',
+    description: 'Penjual sedang meyiapkan dan mengemas barang pesananmu.',
   },
   {
     key: 'picked_up',
-    label: 'Picked Up',
+    label: 'Sudah diambil kurir',
     minHours: 2,
     maxHours: 4,
-    description: 'Courier picked up package from warehouse.',
+    description: 'Paket telah diserahkan penjual ke kurir pengiriman.',
   },
   {
     key: 'sorting_center',
-    label: 'Sorting Center',
+    label: 'Tiba di pusat sortir',
     minHours: 4,
     maxHours: 8,
-    description: 'Package arrived at regional sorting hub.',
+    description: 'Paket sedang dikelompokkan di gudang sortir regional.',
   },
   {
     key: 'in_transit',
-    label: 'In Transit',
+    label: 'Sedang dalam perjalanan',
     minHours: 8,
     maxHours: 12,
-    description: 'Package is moving between transport hubs.',
+    description: 'Paket dalam perjalanan antar kota tujuan.',
   },
   {
     key: 'local_facility',
-    label: 'Local Facility',
+    label: 'Tiba di kota tujuan',
     minHours: 12,
     maxHours: 18,
-    description: 'Package arrived at your local delivery city facility.',
+    description: 'Paket tiba di hub pengiriman daerah tujuanmu.',
   },
   {
     key: 'out_for_delivery',
-    label: 'Out for Delivery',
+    label: 'Sedang diantar',
     minHours: 18,
     maxHours: 24,
-    description: 'Courier is delivering package to your address.',
+    description: 'Kurir sedang menuju ke alamat pengirimanmu.',
   },
   {
     key: 'delivered',
-    label: 'Delivered',
+    label: 'Pesanan diterima',
     minHours: 24,
     maxHours: Infinity,
-    description: 'Package delivered! Time to reflect on your purchase.',
+    description: 'Paket sudah sampai! Yuk, refleksikan pesananmu.',
   },
 ];
 
@@ -124,16 +124,16 @@ export class ShippingCalculator {
 
     let estimatedTimeRemainingText = '';
     if (isDelivered) {
-      estimatedTimeRemainingText = 'Package Delivered';
+      estimatedTimeRemainingText = 'Pesanan Diterima';
     } else {
       const remainingHours = Math.max(0, 24 - elapsedHours);
       const remainingHoursReal = remainingHours / multiplier;
       if (remainingHoursReal < 1) {
         const remainingMins = Math.ceil(remainingHoursReal * 60);
-        estimatedTimeRemainingText = `Est. arrival in ~${remainingMins} min${remainingMins > 1 ? 's' : ''}`;
+        estimatedTimeRemainingText = `Perkiraan tiba ~${remainingMins} menit`;
       } else {
         const h = Math.floor(remainingHoursReal);
-        estimatedTimeRemainingText = `Est. arrival in ~${h} hour${h > 1 ? 's' : ''}`;
+        estimatedTimeRemainingText = `Perkiraan tiba ~${h} jam`;
       }
     }
 

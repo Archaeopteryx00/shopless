@@ -12,18 +12,17 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        primary: {
-          50: '#f0f7ff',
-          100: '#e0effe',
+        shopless: {
+          50: '#eff6ff',
+          100: '#dbeafe',
           500: '#3b82f6',
           600: '#2563eb',
           700: '#1d4ed8',
         },
         surface: {
           light: '#ffffff',
-          dark: '#0f172a',
-          cardLight: '#f8fafc',
-          cardDark: '#1e293b',
+          bg: '#f7f8fa',
+          card: '#ffffff',
         }
       },
     },
