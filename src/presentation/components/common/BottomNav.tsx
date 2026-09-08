@@ -4,15 +4,17 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, ShoppingBag, Heart, Package, BarChart3 } from 'lucide-react';
+import { useOrders } from '@/presentation/hooks/useOrders';
 
 export function BottomNav() {
   const pathname = usePathname();
+  const { deliveredOrdersCount } = useOrders();
 
   const navItems = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/shop', label: 'Shop', icon: ShoppingBag },
     { href: '/wishlist', label: 'Wishlist', icon: Heart },
-    { href: '/orders', label: 'Orders', icon: Package },
+    { href: '/orders', label: 'Orders', icon: Package, badge: deliveredOrdersCount },
     { href: '/insights', label: 'Insights', icon: BarChart3 },
   ];
 
@@ -21,12 +23,12 @@ export function BottomNav() {
       <div className="flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href;
+          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all duration-200 ${
+              className={`relative flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all duration-200 ${
                 isActive
                   ? 'text-blue-400 font-semibold scale-105'
                   : 'text-slate-400 hover:text-slate-200'
@@ -34,6 +36,9 @@ export function BottomNav() {
             >
               <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5px]' : 'stroke-2'}`} />
               <span className="text-[10px] tracking-tight">{item.label}</span>
+              {item.badge && item.badge > 0 ? (
+                <span className="absolute top-1 right-2 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-slate-900 animate-pulse" />
+              ) : null}
             </Link>
           );
         })}

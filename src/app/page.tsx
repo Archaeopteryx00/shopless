@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { useProducts } from '@/presentation/hooks/useProducts';
 import { useWishlist } from '@/presentation/hooks/useWishlist';
 import { useSession } from '@/presentation/hooks/useSession';
+import { useOrders } from '@/presentation/hooks/useOrders';
 import { HeroBanner } from '@/presentation/components/marketplace/HeroBanner';
 import { SearchBar } from '@/presentation/components/marketplace/SearchBar';
 import { CategoryPills } from '@/presentation/components/marketplace/CategoryPills';
 import { ProductCard } from '@/presentation/components/marketplace/ProductCard';
 import { TriggerModal } from '@/presentation/components/marketplace/TriggerModal';
+import { DeliveryBanner } from '@/presentation/components/shipping/DeliveryBanner';
 import { Flame, Sparkles, ArrowRight, Layers } from 'lucide-react';
 
 export default function HomePage() {
@@ -25,6 +27,7 @@ export default function HomePage() {
   } = useProducts();
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { showTriggerModal, selectTrigger, skipTrigger } = useSession();
+  const { deliveredOrdersCount } = useOrders();
 
   const isSearchingOrFiltering = searchQuery.trim() !== '' || category !== 'All';
 
@@ -36,6 +39,9 @@ export default function HomePage() {
         onSelectTrigger={selectTrigger}
         onSkip={skipTrigger}
       />
+
+      {/* Top Delivery Notification Banner */}
+      <DeliveryBanner deliveredCount={deliveredOrdersCount} />
 
       {/* Top Search Bar */}
       <SearchBar value={searchQuery} onChange={setSearchQuery} />
