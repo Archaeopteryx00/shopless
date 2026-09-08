@@ -43,7 +43,7 @@ export default function ShopPage() {
 
       {/* Products Grid */}
       {filteredProducts.length === 0 ? (
-        <div className="bg-white rounded-2xl p-10 text-center text-slate-500 border border-slate-200 shadow-xs">
+        <div className="bg-white rounded-xl p-10 text-center text-slate-500 border border-slate-200 shadow-xs">
           <p className="text-sm">Tidak ada barang yang sesuai pencarian.</p>
           <button
             type="button"
@@ -57,7 +57,7 @@ export default function ShopPage() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 min-w-0">
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}

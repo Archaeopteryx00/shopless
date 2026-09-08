@@ -19,7 +19,7 @@ export function ProductImage({ category, name, className = '', size = 'md' }: Pr
       case 'Books & Learning':
         return 'from-emerald-50 to-slate-100 text-emerald-600 border-slate-200';
       case 'Lifestyle':
-        return 'from-amber-50 to-slate-100 text-amber-600 border-slate-200';
+        return 'from-indigo-50 to-slate-100 text-indigo-600 border-slate-200';
       case 'Fashion':
         return 'from-pink-50 to-slate-100 text-pink-600 border-slate-200';
       case 'Hobbies':

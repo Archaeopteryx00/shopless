@@ -13,7 +13,7 @@ import { ProductCard } from '@/presentation/components/marketplace/ProductCard';
 import { TriggerModal } from '@/presentation/components/marketplace/TriggerModal';
 import { DeliveryBanner } from '@/presentation/components/shipping/DeliveryBanner';
 import { ProductGridSkeleton } from '@/presentation/components/common/Skeletons';
-import { Flame, Sparkles, ArrowRight, Layers } from 'lucide-react';
+import { BadgePercent, Sparkles, ArrowRight, Layers } from 'lucide-react';
 
 export default function HomePage() {
   const {
@@ -72,7 +72,7 @@ export default function HomePage() {
             </h2>
           </div>
           {filteredProducts.length === 0 ? (
-            <div className="bg-white rounded-2xl p-8 text-center text-slate-500 my-3 border border-slate-200 shadow-xs">
+            <div className="bg-white rounded-xl p-8 text-center text-slate-500 my-3 border border-slate-200 shadow-xs">
               <p className="text-sm">Barang tidak ditemukan.</p>
               <button
                 type="button"
@@ -86,7 +86,7 @@ export default function HomePage() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 min-w-0">
               {filteredProducts.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -104,14 +104,14 @@ export default function HomePage() {
           <section>
             <div className="flex items-center justify-between mb-2.5">
               <h2 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                <Flame className="w-4 h-4 text-rose-600" />
+                <BadgePercent className="w-4 h-4 text-rose-600" />
                 <span>Lagi Diskon</span>
               </h2>
               <Link href="/shop" className="text-xs text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-0.5">
                 Lihat Semua <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 min-w-0">
               {deals.slice(0, 4).map((product) => (
                 <ProductCard
                   key={product.id}
@@ -127,11 +127,11 @@ export default function HomePage() {
           <section>
             <div className="flex items-center justify-between mb-2.5">
               <h2 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-amber-500" />
+                <Sparkles className="w-4 h-4 text-blue-600" />
                 <span>Banyak Dilihat</span>
               </h2>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 min-w-0">
               {popular.slice(0, 4).map((product) => (
                 <ProductCard
                   key={product.id}
@@ -148,7 +148,7 @@ export default function HomePage() {
             <div className="flex items-center justify-between mb-2.5">
               <h2 className="text-sm font-bold text-slate-900">Pilihan Buat Kamu</h2>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 min-w-0">
               {forYou.map((product) => (
                 <ProductCard
                   key={product.id}

@@ -39,7 +39,7 @@ export default function OrdersPage() {
       />
 
       {ordersWithStatus.length === 0 ? (
-        <div className="bg-white rounded-2xl p-10 text-center text-slate-500 my-4 flex flex-col items-center gap-3 border border-slate-200 shadow-xs">
+        <div className="bg-white rounded-xl p-10 text-center text-slate-500 my-4 flex flex-col items-center gap-3 border border-slate-200 shadow-xs">
           <Package className="w-12 h-12 text-slate-300 stroke-1" />
           <div>
             <h3 className="text-sm font-bold text-slate-800">Belum ada pesanan</h3>
@@ -49,7 +49,7 @@ export default function OrdersPage() {
           </div>
           <Link
             href="/shop"
-            className="mt-2 text-xs bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-xl transition-all shadow-xs flex items-center gap-1.5"
+            className="mt-2 text-xs bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-lg transition-all shadow-xs flex items-center gap-1.5"
           >
             <ShoppingBag className="w-3.5 h-3.5" />
             <span>Jelajah Katalog</span>
@@ -63,7 +63,7 @@ export default function OrdersPage() {
               <Link
                 key={order.id}
                 href={`/orders/${order.id}`}
-                className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col gap-3 hover:border-slate-300 transition-all group"
+                className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col gap-3 hover:border-slate-300 transition-all group"
               >
                 {/* Order Header info */}
                 <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
@@ -79,7 +79,7 @@ export default function OrdersPage() {
 
                   {/* Status Badge */}
                   <div
-                    className={`flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                    className={`flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-md border ${
                       status.isDelivered
                         ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                         : 'bg-blue-50 text-blue-700 border-blue-200'

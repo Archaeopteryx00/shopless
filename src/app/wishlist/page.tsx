@@ -46,7 +46,7 @@ export default function WishlistPage() {
       </div>
 
       {wishlistedProducts.length === 0 ? (
-        <div className="bg-white rounded-2xl p-10 text-center text-slate-500 my-6 flex flex-col items-center gap-3 border border-slate-200 shadow-xs">
+        <div className="bg-white rounded-xl p-10 text-center text-slate-500 my-6 flex flex-col items-center gap-3 border border-slate-200 shadow-xs">
           <Heart className="w-12 h-12 text-slate-300 stroke-1" />
           <div>
             <h3 className="text-sm font-bold text-slate-800">Belum ada yang disimpan</h3>
@@ -56,7 +56,7 @@ export default function WishlistPage() {
           </div>
           <Link
             href="/shop"
-            className="mt-2 text-xs bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-xl transition-all shadow-sm"
+            className="mt-2 text-xs bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-lg transition-all shadow-sm"
           >
             Jelajah Katalog
           </Link>
@@ -66,7 +66,7 @@ export default function WishlistPage() {
           {wishlistedProducts.map((product) => (
             <div
               key={product.id}
-              className="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex items-center gap-3"
+              className="bg-white p-3 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3"
             >
               <div className="w-16 h-16 shrink-0">
                 <ProductImage
@@ -100,7 +100,7 @@ export default function WishlistPage() {
                 <button
                   type="button"
                   onClick={() => handleQuickAddToCart(product.id)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-xl text-xs font-semibold flex items-center gap-1 shadow-xs transition-all"
+                  className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg text-xs font-semibold flex items-center gap-1 shadow-xs transition-all"
                   aria-label="Tambah ke Keranjang"
                 >
                   <ShoppingCart className="w-3.5 h-3.5" />

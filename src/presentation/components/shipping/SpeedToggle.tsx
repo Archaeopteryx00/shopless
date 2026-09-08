@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { FastForward, Zap } from 'lucide-react';
+import { FastForward, Clock3 } from 'lucide-react';
 
 interface SpeedToggleProps {
   currentMultiplier: number;
@@ -16,13 +16,13 @@ export function SpeedToggle({ currentMultiplier, onSelectMultiplier }: SpeedTogg
   ];
 
   return (
-    <div className="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex flex-col gap-2">
+    <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-xs flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-          <Zap className="w-3.5 h-3.5 text-amber-500" />
+          <Clock3 className="w-3.5 h-3.5 text-blue-600" />
           <span>Simulasi Waktu</span>
         </div>
-        <span className="text-[10px] bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded font-mono font-semibold">
+        <span className="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-md font-mono font-semibold">
           {currentMultiplier}x Kecepatan
         </span>
       </div>
@@ -33,7 +33,7 @@ export function SpeedToggle({ currentMultiplier, onSelectMultiplier }: SpeedTogg
             key={opt.value}
             type="button"
             onClick={() => onSelectMultiplier(opt.value)}
-            className={`py-1.5 px-2 rounded-xl text-[11px] font-semibold transition-all duration-150 flex items-center justify-center gap-1 border ${
+            className={`py-1.5 px-2 rounded-lg text-[11px] font-semibold transition-all duration-150 flex items-center justify-center gap-1 border ${
               currentMultiplier === opt.value
                 ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300'

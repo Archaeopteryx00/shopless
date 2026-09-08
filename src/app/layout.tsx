@@ -48,7 +48,7 @@ export default function RootLayout({
       </head>
       <body className="bg-[#f7f8fa] text-slate-900 antialiased min-h-screen">
         <RepositoryProvider>
-          <div className="max-w-md mx-auto min-h-screen flex flex-col bg-[#f7f8fa] border-x border-slate-200 shadow-md relative pb-20">
+          <div className="w-full max-w-md mx-auto min-h-screen flex flex-col bg-[#f7f8fa] border-x border-slate-200 shadow-md relative pb-20 overflow-x-hidden">
             <Header />
             <main className="flex-1 px-4 py-3">{children}</main>
             <BottomNav />

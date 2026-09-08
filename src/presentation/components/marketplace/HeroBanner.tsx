@@ -5,10 +5,10 @@ import { ShoppingBag, Sparkles, ShieldCheck } from 'lucide-react';
 
 export function HeroBanner() {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 p-4 text-white shadow-sm border border-blue-500">
+    <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 p-4 text-white shadow-sm border border-blue-500">
       <div className="relative z-10 flex flex-col gap-1.5">
         <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-100 uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+          <Sparkles className="w-3.5 h-3.5 text-blue-200" />
           <span>Simulasi Belanja • Gratis</span>
         </div>
 
@@ -20,8 +20,6 @@ export function HeroBanner() {
           Temukan barang yang kamu suka, masukin ke keranjang, dan checkout seperti biasa.
         </p>
       </div>
-
-      <div className="absolute -right-4 -bottom-4 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none" />
     </div>
   );
 }

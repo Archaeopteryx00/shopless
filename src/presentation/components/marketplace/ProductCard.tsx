@@ -27,7 +27,7 @@ export function ProductCard({ product, isWishlisted = false, onToggleWishlist }:
     <div className="group relative card-marketplace p-2.5 flex flex-col justify-between transition-all duration-200 hover:shadow-md hover:border-slate-300">
       {/* Discount Badge */}
       {discountPercent && (
-        <span className="absolute top-3 left-3 z-20 bg-rose-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-xs">
+        <span className="absolute top-3 left-3 z-20 bg-rose-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md shadow-xs">
           {discountPercent}%
         </span>
       )}
@@ -83,8 +83,8 @@ export function ProductCard({ product, isWishlisted = false, onToggleWishlist }:
             </div>
 
             {/* Rating & Review count */}
-            <div className="flex items-center gap-1 text-[11px] text-amber-500 font-medium">
-              <Star className="w-3 h-3 fill-current" />
+            <div className="flex items-center gap-1 text-[11px] text-slate-700 font-medium">
+              <Star className="w-3 h-3 fill-slate-700 text-slate-700" />
               <span>{product.rating.toFixed(1)}</span>
               <span className="text-slate-400 font-normal text-[10px]">
                 ({product.reviewCount})

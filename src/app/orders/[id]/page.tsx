@@ -78,11 +78,11 @@ export default function OrderDetailPage() {
 
       {/* Delivered Notification & Reflection Action Banner */}
       {status.isDelivered && (
-        <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl flex flex-col gap-3 text-emerald-900 shadow-xs animate-fadeIn">
+        <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex flex-col gap-3 text-emerald-900 shadow-xs animate-fadeIn">
           <div className="flex items-center gap-3">
             <CheckCircle2 className="w-6 h-6 shrink-0 text-emerald-600" />
             <div>
-              <h3 className="text-xs font-bold text-emerald-900">Pesanan Sudah Sampai! 📦</h3>
+              <h3 className="text-xs font-bold text-emerald-900">Pesanan Sudah Sampai!</h3>
               <p className="text-[11px] text-emerald-700 mt-0.5">
                 Paket kamu sudah diterima setelah waktu jeda 24 jam.
               </p>
@@ -90,10 +90,10 @@ export default function OrderDetailPage() {
           </div>
 
           {reflection ? (
-            <div className="bg-white p-3 rounded-xl border border-slate-200 text-xs text-slate-800 flex flex-col gap-1.5 shadow-xs">
+            <div className="bg-white p-3 rounded-lg border border-slate-200 text-xs text-slate-800 flex flex-col gap-1.5 shadow-xs">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] uppercase font-bold text-blue-600 flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Refleksi Kamu
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600" /> Refleksi Kamu
                 </span>
                 <Link
                   href={`/orders/${order.id}/reflect`}
@@ -118,7 +118,7 @@ export default function OrderDetailPage() {
           ) : (
             <Link
               href={`/orders/${order.id}/reflect`}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-xs transition-all mt-1"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-lg text-xs flex items-center justify-center gap-2 shadow-xs transition-all mt-1"
             >
               <MessageSquare className="w-4 h-4" />
               <span>Refleksikan Pesanan Ini</span>
@@ -131,7 +131,7 @@ export default function OrderDetailPage() {
       <ShippingTimeline status={status} />
 
       {/* Shipping & Payment Meta Box */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col gap-3">
+      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col gap-3">
         <div className="flex justify-between items-center text-xs pb-2.5 border-b border-slate-100">
           <div className="flex items-center gap-1.5 text-slate-500">
             <Calendar className="w-3.5 h-3.5 text-blue-600" />
@@ -166,7 +166,7 @@ export default function OrderDetailPage() {
       </div>
 
       {/* Snapshot Items List */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col gap-3">
+      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col gap-3">
         <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
           Barang Dipesan ({order.items.length})
         </h3>
@@ -207,7 +207,7 @@ export default function OrderDetailPage() {
             <span className="text-slate-900 font-bold">{formatIDR(order.totalAmount)}</span>
           </div>
 
-          <div className="flex justify-between items-center text-xs font-bold bg-emerald-50 border border-emerald-200 p-2.5 rounded-xl">
+          <div className="flex justify-between items-center text-xs font-bold bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg">
             <span className="text-emerald-700">Total Bayar Sungguhan</span>
             <span className="text-emerald-700 text-sm">Rp 0</span>
           </div>

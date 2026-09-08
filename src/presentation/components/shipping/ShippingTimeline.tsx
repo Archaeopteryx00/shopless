@@ -12,7 +12,7 @@ export function ShippingTimeline({ status }: ShippingTimelineProps) {
   const { stageIndex, isDelivered, progressPercent, estimatedTimeRemainingText } = status;
 
   return (
-    <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs flex flex-col gap-4">
+    <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-xs flex flex-col gap-4">
       {/* Header Info */}
       <div className="flex items-center justify-between pb-3 border-b border-slate-100">
         <div>
@@ -26,7 +26,7 @@ export function ShippingTimeline({ status }: ShippingTimelineProps) {
         </div>
 
         <div className="text-right">
-          <span className={`text-xs font-bold ${isDelivered ? 'text-emerald-600' : 'text-amber-600'}`}>
+          <span className={`text-xs font-bold ${isDelivered ? 'text-emerald-600' : 'text-blue-600'}`}>
             {estimatedTimeRemainingText}
           </span>
           <p className="text-[10px] text-slate-400 mt-0.5">

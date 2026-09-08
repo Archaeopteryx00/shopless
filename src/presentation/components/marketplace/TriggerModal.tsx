@@ -22,8 +22,8 @@ export function TriggerModal({ isOpen, onSelectTrigger, onSkip }: TriggerModalPr
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
-      <div className="w-full max-w-sm bg-white rounded-2xl p-5 border border-slate-200 shadow-xl flex flex-col gap-4 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 animate-fadeIn">
+      <div className="w-full max-w-sm bg-white rounded-xl p-5 border border-slate-200 shadow-xl flex flex-col gap-4 relative">
         <button
           type="button"
           onClick={onSkip}
@@ -34,7 +34,7 @@ export function TriggerModal({ isOpen, onSelectTrigger, onSkip }: TriggerModalPr
         </button>
 
         <div className="flex items-center gap-1.5 text-blue-600 font-semibold text-xs uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+          <Sparkles className="w-3.5 h-3.5 text-blue-600" />
           <span>Dorongan Belanja</span>
         </div>
 
@@ -51,7 +51,7 @@ export function TriggerModal({ isOpen, onSelectTrigger, onSkip }: TriggerModalPr
               key={option}
               type="button"
               onClick={() => onSelectTrigger(option)}
-              className="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-600 hover:text-white text-xs font-medium text-slate-800 border border-slate-200 hover:border-blue-600 transition-all duration-150"
+              className="w-full text-left px-3.5 py-2.5 rounded-lg bg-slate-50 hover:bg-blue-600 hover:text-white text-xs font-medium text-slate-800 border border-slate-200 hover:border-blue-600 transition-all duration-150"
             >
               {option}
             </button>

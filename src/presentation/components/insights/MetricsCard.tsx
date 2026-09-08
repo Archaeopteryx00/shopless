@@ -23,7 +23,6 @@ export function MetricsCard({
       case 'emerald':
         return 'text-emerald-700 border-emerald-200 bg-emerald-50';
       case 'amber':
-        return 'text-amber-700 border-amber-200 bg-amber-50';
       case 'blue':
         return 'text-blue-700 border-blue-200 bg-blue-50';
       default:
@@ -32,12 +31,12 @@ export function MetricsCard({
   };
 
   return (
-    <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between gap-2">
+    <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between gap-2">
       <div className="flex items-center justify-between">
         <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
           {label}
         </span>
-        <div className={`p-2 rounded-xl border ${getVariantStyles()}`}>
+        <div className={`p-2 rounded-lg border ${getVariantStyles()}`}>
           <Icon className="w-4 h-4" />
         </div>
       </div>
