@@ -11,9 +11,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-xs">
-      <Link href="/" className="flex items-center gap-2">
-        <ShoplessLogo size={28} />
-        <span className="font-bold text-lg tracking-tight text-slate-900">
+      <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
+        <ShoplessLogo size={32} />
+        <span className="font-extrabold text-xl tracking-tight text-slate-900 flex items-center">
           Shopless
         </span>
       </Link>

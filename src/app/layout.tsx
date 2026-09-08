@@ -7,6 +7,17 @@ import { BottomNav } from '@/presentation/components/common/BottomNav';
 export const metadata: Metadata = {
   title: 'Shopless - Belanja Tanpa Uang Sungguhan',
   description: 'Simulasi e-commerce lokal untuk eksplorasi dorongan belanja tanpa uang sungguhan.',
+  icons: {
+    icon: [
+      { url: '/logo.png', type: 'image/png' },
+      { url: '/icon.png', type: 'image/png' },
+    ],
+    shortcut: '/logo.png',
+    apple: [
+      { url: '/apple-touch-icon.png' },
+      { url: '/logo.png' },
+    ],
+  },
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -31,7 +42,9 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/logo.png" type="image/png" sizes="any" />
+        <link rel="shortcut icon" href="/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className="bg-[#f7f8fa] text-slate-900 antialiased min-h-screen">
         <RepositoryProvider>

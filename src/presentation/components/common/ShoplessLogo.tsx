@@ -8,14 +8,14 @@ interface ShoplessLogoProps {
   size?: number;
 }
 
-export function ShoplessLogo({ className = '', size = 28 }: ShoplessLogoProps) {
+export function ShoplessLogo({ className = '', size = 32 }: ShoplessLogoProps) {
   return (
     <Image
       src="/logo.png"
       alt="Shopless Logo"
       width={size}
       height={size}
-      className={`rounded-lg object-contain shrink-0 ${className}`}
+      className={`object-contain shrink-0 ${className}`}
       priority
     />
   );
