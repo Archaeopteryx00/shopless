@@ -1,13 +1,15 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useOrders } from '@/presentation/hooks/useOrders';
+import { useReflections } from '@/presentation/hooks/useReflections';
 import { ShippingTimeline } from '@/presentation/components/shipping/ShippingTimeline';
 import { SpeedToggle } from '@/presentation/components/shipping/SpeedToggle';
 import { ProductImage } from '@/presentation/components/marketplace/ProductImage';
 import { formatIDR } from '@/presentation/components/marketplace/ProductCard';
-import { ArrowLeft, MapPin, CreditCard, CheckCircle2, Calendar } from 'lucide-react';
+import { ArrowLeft, MapPin, CreditCard, CheckCircle2, Calendar, Sparkles, MessageSquare } from 'lucide-react';
 
 export default function OrderDetailPage() {
   const params = useParams();
@@ -15,7 +17,10 @@ export default function OrderDetailPage() {
   const orderId = params.id as string;
 
   const { getOrderWithStatusById, speedMultiplier, changeSpeedMultiplier } = useOrders();
+  const { getReflectionByOrderId } = useReflections();
+
   const item = getOrderWithStatusById(orderId);
+  const reflection = getReflectionByOrderId(orderId);
 
   if (!item) {
     return (
@@ -33,6 +38,14 @@ export default function OrderDetailPage() {
   }
 
   const { order, status } = item;
+
+  const getReflectionBadgeText = () => {
+    if (!reflection) return null;
+    if (reflection.stillWanted === 'yes') return 'Still wanted after 24h';
+    if (reflection.stillWanted === 'probably') return 'Probably would buy';
+    if (reflection.stillWanted === 'dont_care') return "Didn't really care after 24h";
+    return 'Questioned purchase after 24h';
+  };
 
   return (
     <div className="flex flex-col gap-5 pb-8">
@@ -63,16 +76,54 @@ export default function OrderDetailPage() {
         onSelectMultiplier={changeSpeedMultiplier}
       />
 
-      {/* Delivered Notification if ready */}
+      {/* Delivered Notification & Reflection Action Banner */}
       {status.isDelivered && (
-        <div className="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl flex items-center gap-3 text-emerald-400 animate-fadeIn">
-          <CheckCircle2 className="w-6 h-6 shrink-0 text-emerald-400" />
-          <div>
-            <h3 className="text-xs font-bold text-emerald-300">Package Delivered 📦</h3>
-            <p className="text-[11px] text-emerald-400/90 mt-0.5">
-              Simulated shipment completed after 24-hour cooling off period.
-            </p>
+        <div className="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl flex flex-col gap-3 text-emerald-400 animate-fadeIn">
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="w-6 h-6 shrink-0 text-emerald-400" />
+            <div>
+              <h3 className="text-xs font-bold text-emerald-300">Package Delivered 📦</h3>
+              <p className="text-[11px] text-emerald-400/90 mt-0.5">
+                Simulated shipment completed after 24-hour cooling off period.
+              </p>
+            </div>
           </div>
+
+          {reflection ? (
+            <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-700 text-xs text-slate-200 flex flex-col gap-1.5 mt-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] uppercase font-bold text-blue-400 flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-amber-300" /> Completed Reflection
+                </span>
+                <Link
+                  href={`/orders/${order.id}/reflect`}
+                  className="text-[10px] text-blue-400 hover:underline"
+                >
+                  Edit
+                </Link>
+              </div>
+              <p className="font-semibold text-white">{getReflectionBadgeText()}</p>
+              <div className="flex justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-800">
+                <span>Spend real money today?</span>
+                <span className={reflection.wouldBuyReal ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
+                  {reflection.wouldBuyReal ? 'Yes' : 'No'}
+                </span>
+              </div>
+              {reflection.reason && (
+                <p className="text-[11px] text-slate-400 italic mt-0.5">
+                  &quot;{reflection.reason}&quot;
+                </p>
+              )}
+            </div>
+          ) : (
+            <Link
+              href={`/orders/${order.id}/reflect`}
+              className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all mt-1"
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span>Reflect on this Purchase</span>
+            </Link>
+          )}
         </div>
       )}
 
