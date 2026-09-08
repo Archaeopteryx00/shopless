@@ -4,6 +4,7 @@ import './globals.css';
 import { RepositoryProvider } from '@/infrastructure/db/RepositoryContext';
 import { Header } from '@/presentation/components/common/Header';
 import { BottomNav } from '@/presentation/components/common/BottomNav';
+import { PwaInstallPrompt } from '@/presentation/components/common/PwaInstallPrompt';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -58,6 +59,7 @@ export default function RootLayout({
           <div className="w-full max-w-md mx-auto min-h-screen flex flex-col bg-[#f7f8fa] border-x border-slate-200 shadow-md relative pb-20 overflow-x-hidden">
             <Header />
             <main className="flex-1 px-4 py-3">{children}</main>
+            <PwaInstallPrompt />
             <BottomNav />
           </div>
         </RepositoryProvider>
