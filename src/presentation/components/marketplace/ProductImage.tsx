@@ -73,7 +73,7 @@ export function ProductImage({
       >
         {/* Skeleton shimmer placeholder while image loads */}
         {!isLoaded && (
-          <div className="absolute inset-0 bg-slate-200 animate-pulse motion-reduce:animate-none z-10" />
+          <div className="absolute inset-0 bg-slate-200 animate-pulse motion-reduce:animate-none z-10 pointer-events-none" />
         )}
 
         {/* eslint-disable-next-line @next/next/no-img-element */}
