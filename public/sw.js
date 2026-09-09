@@ -1,13 +1,9 @@
-const CACHE_NAME = 'shopless-v3';
+const CACHE_NAME = 'shopless-v3-p65';
 const STATIC_ASSETS = [
-  '/',
-  '/shop',
-  '/cart',
-  '/wishlist',
-  '/orders',
-  '/insights',
   '/manifest.json',
   '/favicon.ico',
+  '/logo.png',
+  '/apple-touch-icon.png',
 ];
 
 self.addEventListener('install', (event) => {
@@ -25,6 +21,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
+            console.log('[SW] Purging old cache:', key);
             return caches.delete(key);
           }
         })
@@ -35,32 +32,46 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
+  // Navigation / Document requests: STRICT Network-First
+  if (
+    event.request.mode === 'navigate' ||
+    (event.request.headers.get('accept') &&
+      event.request.headers.get('accept').includes('text/html'))
+  ) {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match(event.request) || caches.match('/'))
+      fetch(event.request)
+        .then((networkResponse) => {
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(event.request).then((cached) => {
+            return cached || caches.match('/');
+          });
+        })
     );
     return;
   }
 
+  // Static assets & API requests: Stale-While-Revalidate or Network-First
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).then((networkResponse) => {
-        if (
-          !networkResponse ||
-          networkResponse.status !== 200 ||
-          networkResponse.type !== 'basic'
-        ) {
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
+          if (
+            networkResponse &&
+            networkResponse.status === 200 &&
+            networkResponse.type === 'basic'
+          ) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
           return networkResponse;
-        }
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
-        return networkResponse;
-      });
+        })
+        .catch(() => cachedResponse);
+
+      return cachedResponse || fetchPromise;
     })
   );
 });

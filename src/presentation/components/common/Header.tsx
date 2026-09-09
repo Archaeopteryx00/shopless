@@ -30,8 +30,9 @@ export function Header() {
       </Link>
 
       <div className="flex items-center gap-2">
-        <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">
-          Simulasi Belanja
+        <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 flex items-center gap-1">
+          <span>Simulasi Belanja</span>
+          <span className="text-[9px] text-blue-500 font-mono">v6.5</span>
         </span>
 
         <Link

@@ -2,8 +2,10 @@ import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { RepositoryProvider } from '@/infrastructure/db/RepositoryContext';
+import { ProductDetailProvider } from '@/presentation/context/ProductDetailContext';
 import { Header } from '@/presentation/components/common/Header';
 import { BottomNav } from '@/presentation/components/common/BottomNav';
+import { ProductDetailActionBar } from '@/presentation/components/marketplace/ProductDetailActionBar';
 import { PwaInstallPrompt } from '@/presentation/components/common/PwaInstallPrompt';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -56,21 +58,28 @@ export default function RootLayout({
       </head>
       <body className={`${plusJakartaSans.className} bg-[#f7f8fa] text-slate-900 antialiased min-h-screen`}>
         <RepositoryProvider>
-          <div className="w-full max-w-md mx-auto min-h-screen flex flex-col bg-[#f7f8fa] border-x border-slate-200 shadow-md relative pb-20 overflow-x-clip">
-            <Header />
-            <main className="flex-1 px-4 py-3 animate-fadeIn">{children}</main>
-            <PwaInstallPrompt />
-            <BottomNav />
-          </div>
+          <ProductDetailProvider>
+            <div className="w-full max-w-md mx-auto min-h-screen flex flex-col bg-[#f7f8fa] border-x border-slate-200 shadow-md relative pb-20 overflow-x-clip">
+              <Header />
+              <main className="flex-1 px-4 py-3 animate-fadeIn">{children}</main>
+              <PwaInstallPrompt />
+              <BottomNav />
+              <ProductDetailActionBar />
+            </div>
+          </ProductDetailProvider>
         </RepositoryProvider>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js').catch(function(err) {
-                    console.log('ServiceWorker registration failed: ', err);
-                  });
+                  navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
+                    .then(function(reg) {
+                      reg.update();
+                    })
+                    .catch(function(err) {
+                      console.log('ServiceWorker registration failed: ', err);
+                    });
                 });
               }
             `,
