@@ -10,10 +10,19 @@ interface ProductImageProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   image?: string;
+  priority?: boolean;
 }
 
-export function ProductImage({ category, name, className = '', size = 'md', image }: ProductImageProps) {
+export function ProductImage({
+  category,
+  name,
+  className = '',
+  size = 'md',
+  image,
+  priority = false,
+}: ProductImageProps) {
   const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const getCategoryGradient = (cat: ProductCategory) => {
     switch (cat) {
@@ -33,7 +42,14 @@ export function ProductImage({ category, name, className = '', size = 'md', imag
   };
 
   const getCategoryIcon = (cat: ProductCategory) => {
-    const iconClass = size === 'sm' ? 'w-6 h-6' : size === 'lg' ? 'w-12 h-12' : size === 'xl' ? 'w-16 h-16' : 'w-9 h-9';
+    const iconClass =
+      size === 'sm'
+        ? 'w-6 h-6'
+        : size === 'lg'
+        ? 'w-12 h-12'
+        : size === 'xl'
+        ? 'w-16 h-16'
+        : 'w-9 h-9';
     switch (cat) {
       case 'Tech':
         return <Laptop className={iconClass} />;
@@ -52,12 +68,23 @@ export function ProductImage({ category, name, className = '', size = 'md', imag
 
   if (image && !imageError) {
     return (
-      <div className={`relative overflow-hidden rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center ${className}`}>
+      <div
+        className={`relative overflow-hidden rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center ${className}`}
+      >
+        {/* Skeleton shimmer placeholder while image loads */}
+        {!isLoaded && (
+          <div className="absolute inset-0 bg-slate-200 animate-pulse motion-reduce:animate-none z-10" />
+        )}
+
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading={priority ? 'eager' : 'lazy'}
+          className={`w-full h-full object-cover transition-opacity duration-300 ease-out motion-reduce:transition-none ${
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          onLoad={() => setIsLoaded(true)}
           onError={() => setImageError(true)}
         />
       </div>

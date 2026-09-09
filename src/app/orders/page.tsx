@@ -8,6 +8,7 @@ import { formatIDR } from '@/presentation/components/marketplace/ProductCard';
 import { ProductImage } from '@/presentation/components/marketplace/ProductImage';
 import { getMarketplaceStatus, MarketplaceStatusKey } from '@/presentation/utils/orderStatus';
 import { Package, Truck, CheckCircle2, ChevronRight, ShoppingBag, Box } from 'lucide-react';
+import { ListSkeleton } from '@/presentation/components/common/Skeletons';
 
 export default function OrdersPage() {
   const { ordersWithStatus, speedMultiplier, changeSpeedMultiplier, loading } = useOrders();
@@ -28,8 +29,14 @@ export default function OrdersPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh] text-slate-500 text-xs">
-        Memuat pesanan...
+      <div className="flex flex-col gap-4 pb-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Package className="w-5 h-5 text-blue-600" />
+            <h1 className="text-lg font-bold text-slate-900">Pesanan Saya</h1>
+          </div>
+        </div>
+        <ListSkeleton count={3} />
       </div>
     );
   }

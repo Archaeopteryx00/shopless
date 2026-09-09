@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shopless-v2';
+const CACHE_NAME = 'shopless-v3';
 const STATIC_ASSETS = [
   '/',
   '/shop',

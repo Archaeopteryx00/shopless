@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useCart } from '@/presentation/hooks/useCart';
 import { ProductImage } from '@/presentation/components/marketplace/ProductImage';
 import { formatIDR } from '@/presentation/components/marketplace/ProductCard';
 import { Order } from '@/domain/models/Order';
+import { ListSkeleton } from '@/presentation/components/common/Skeletons';
 import {
   ShoppingCart,
   Trash2,
@@ -19,7 +21,10 @@ import {
   Package,
 } from 'lucide-react';
 
-export default function CartPage() {
+function CartContent() {
+  const searchParams = useSearchParams();
+  const checkoutParam = searchParams.get('checkout') === 'true';
+
   const {
     detailedItems,
     subtotal,
@@ -35,10 +40,22 @@ export default function CartPage() {
   const [placedOrder, setPlacedOrder] = useState<Order | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (checkoutParam) {
+      setIsCheckoutStep(true);
+    }
+  }, [checkoutParam]);
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh] text-slate-500 text-xs">
-        Memuat keranjang...
+      <div className="flex flex-col gap-5 pb-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <ShoppingCart className="w-5 h-5 text-blue-600" />
+            <h1 className="text-lg font-bold text-slate-900">Keranjang</h1>
+          </div>
+        </div>
+        <ListSkeleton count={3} />
       </div>
     );
   }
@@ -360,5 +377,25 @@ export default function CartPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function CartPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex flex-col gap-5 pb-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <ShoppingCart className="w-5 h-5 text-blue-600" />
+              <h1 className="text-lg font-bold text-slate-900">Keranjang</h1>
+            </div>
+          </div>
+          <ListSkeleton count={3} />
+        </div>
+      }
+    >
+      <CartContent />
+    </Suspense>
   );
 }

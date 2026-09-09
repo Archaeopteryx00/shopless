@@ -8,6 +8,7 @@ import { useOrders } from '@/presentation/hooks/useOrders';
 import { staticCatalog } from '@/infrastructure/catalog/staticCatalog';
 import { MetricsCard } from '@/presentation/components/insights/MetricsCard';
 import { formatIDR } from '@/presentation/components/marketplace/ProductCard';
+import { ListSkeleton } from '@/presentation/components/common/Skeletons';
 import { BarChart2, ShoppingBag, ShieldCheck, Sparkles, Clock, PieChart } from 'lucide-react';
 
 export default function InsightsPage() {
@@ -17,8 +18,14 @@ export default function InsightsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh] text-slate-500 text-xs">
-        Memuat ringkasan...
+      <div className="flex flex-col gap-5 pb-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <BarChart2 className="w-5 h-5 text-blue-600" />
+            <h1 className="text-lg font-bold text-slate-900">Ringkasan Kesadaran</h1>
+          </div>
+        </div>
+        <ListSkeleton count={3} />
       </div>
     );
   }

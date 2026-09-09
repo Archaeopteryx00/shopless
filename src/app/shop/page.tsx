@@ -1,11 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useProducts } from '@/presentation/hooks/useProducts';
 import { useWishlist } from '@/presentation/hooks/useWishlist';
 import { SearchBar } from '@/presentation/components/marketplace/SearchBar';
 import { CategoryPills } from '@/presentation/components/marketplace/CategoryPills';
 import { ProductCard } from '@/presentation/components/marketplace/ProductCard';
+import { ProductGridSkeleton } from '@/presentation/components/common/Skeletons';
 import { Compass } from 'lucide-react';
 
 export default function ShopPage() {
@@ -17,6 +18,14 @@ export default function ShopPage() {
     filteredProducts,
   } = useProducts();
   const { isWishlisted, toggleWishlist } = useWishlist();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, [category, searchQuery]);
 
   return (
     <div className="flex flex-col gap-5 pb-6">
@@ -42,7 +51,9 @@ export default function ShopPage() {
       </div>
 
       {/* Products Grid */}
-      {filteredProducts.length === 0 ? (
+      {isLoading ? (
+        <ProductGridSkeleton count={6} />
+      ) : filteredProducts.length === 0 ? (
         <div className="bg-white rounded-xl p-10 text-center text-slate-500 border border-slate-200 shadow-xs">
           <p className="text-sm">Tidak ada barang yang sesuai pencarian.</p>
           <button
@@ -58,12 +69,13 @@ export default function ShopPage() {
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-3 min-w-0">
-          {filteredProducts.map((product) => (
+          {filteredProducts.map((product, idx) => (
             <ProductCard
               key={product.id}
               product={product}
               isWishlisted={isWishlisted(product.id)}
               onToggleWishlist={toggleWishlist}
+              priority={idx < 4}
             />
           ))}
         </div>

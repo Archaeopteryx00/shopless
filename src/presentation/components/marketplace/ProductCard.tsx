@@ -10,6 +10,7 @@ interface ProductCardProps {
   product: Product;
   isWishlisted?: boolean;
   onToggleWishlist?: (productId: string) => void;
+  priority?: boolean;
 }
 
 export function formatIDR(price: number): string {
@@ -18,7 +19,12 @@ export function formatIDR(price: number): string {
   return `Rp ${formatted}`;
 }
 
-export function ProductCard({ product, isWishlisted = false, onToggleWishlist }: ProductCardProps) {
+export function ProductCard({
+  product,
+  isWishlisted = false,
+  onToggleWishlist,
+  priority = false,
+}: ProductCardProps) {
   const discountPercent = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null;
@@ -57,6 +63,7 @@ export function ProductCard({ product, isWishlisted = false, onToggleWishlist }:
             category={product.category}
             name={product.name}
             image={product.image}
+            priority={priority}
             className="w-full h-full"
             size="md"
           />

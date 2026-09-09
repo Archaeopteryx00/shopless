@@ -7,6 +7,7 @@ import { useRepositories } from '@/infrastructure/db/RepositoryContext';
 import { ProductCard, formatIDR } from '@/presentation/components/marketplace/ProductCard';
 import { ProductImage } from '@/presentation/components/marketplace/ProductImage';
 import { Toast } from '@/presentation/components/common/Toast';
+import { ListSkeleton } from '@/presentation/components/common/Skeletons';
 import { Heart, ShoppingCart, Trash2 } from 'lucide-react';
 
 export default function WishlistPage() {
@@ -16,8 +17,14 @@ export default function WishlistPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh] text-slate-500 text-xs">
-        Memuat wishlist...
+      <div className="flex flex-col gap-5 pb-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Heart className="w-5 h-5 text-rose-600 fill-rose-600/20" />
+            <h1 className="text-lg font-bold text-slate-900">Wishlist</h1>
+          </div>
+        </div>
+        <ListSkeleton count={3} />
       </div>
     );
   }

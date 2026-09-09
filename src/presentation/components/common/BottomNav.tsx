@@ -11,6 +11,10 @@ export function BottomNav() {
   const pathname = usePathname();
   const { ordersWithStatus } = useOrders();
 
+  // Hide BottomNav on Product Detail page (/shop/[id])
+  const isProductDetail = pathname.startsWith('/shop/') && pathname !== '/shop';
+  if (isProductDetail) return null;
+
   const activeOrdersCount = ordersWithStatus.length;
   const activeShippingCount = ordersWithStatus.filter((o) => !o.status.isDelivered).length;
   const showBadge = activeOrdersCount > 0;

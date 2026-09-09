@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useProducts } from '@/presentation/hooks/useProducts';
 import { useWishlist } from '@/presentation/hooks/useWishlist';
@@ -29,6 +29,14 @@ export default function HomePage() {
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { showTriggerModal, selectTrigger, skipTrigger } = useSession();
   const { deliveredOrdersCount } = useOrders();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, [category, searchQuery]);
 
   const isSearchingOrFiltering = searchQuery.trim() !== '' || category !== 'All';
 
@@ -60,8 +68,18 @@ export default function HomePage() {
         <CategoryPills activeCategory={category} onSelectCategory={setCategory} />
       </div>
 
-      {/* Active Search/Filter Results Grid */}
-      {isSearchingOrFiltering ? (
+      {/* Active Search/Filter Results Grid or Default Section Views */}
+      {isLoading ? (
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-blue-600" />
+              <span>Memuat Produk...</span>
+            </h2>
+          </div>
+          <ProductGridSkeleton count={4} />
+        </section>
+      ) : isSearchingOrFiltering ? (
         <section>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
@@ -87,12 +105,13 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-3 min-w-0">
-              {filteredProducts.map((product) => (
+              {filteredProducts.map((product, idx) => (
                 <ProductCard
                   key={product.id}
                   product={product}
                   isWishlisted={isWishlisted(product.id)}
                   onToggleWishlist={toggleWishlist}
+                  priority={idx < 4}
                 />
               ))}
             </div>
@@ -112,12 +131,13 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="grid grid-cols-2 gap-3 min-w-0">
-              {deals.slice(0, 4).map((product) => (
+              {deals.slice(0, 4).map((product, idx) => (
                 <ProductCard
                   key={product.id}
                   product={product}
                   isWishlisted={isWishlisted(product.id)}
                   onToggleWishlist={toggleWishlist}
+                  priority={idx < 2}
                 />
               ))}
             </div>

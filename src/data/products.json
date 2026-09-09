@@ -32,7 +32,7 @@
     "rating": 4.9,
     "reviewCount": 650,
     "description": "Curved Monitor layar melengkung 1500R resolusi Full HD dengan refresh rate 165Hz untuk pengalaman visual immersive.",
-    "image": "/products/Gadget_Curved Monitor.png",
+    "image": "/products/Gadget_Curved_Monitor.png",
     "tags": ["desirable", "premium"]
   },
   {
@@ -44,7 +44,7 @@
     "rating": 4.8,
     "reviewCount": 1420,
     "description": "Mechanical Keyboard dengan switch mekanikal yang responsif, lampu RGB dinamis, dan keycaps PBT tahan lama.",
-    "image": "/products/Gadget_Keyboard mechanical.png",
+    "image": "/products/Gadget_Keyboard_mechanical.png",
     "tags": ["desirable", "useful"]
   },
   {
@@ -68,7 +68,7 @@
     "rating": 4.7,
     "reviewCount": 1130,
     "description": "Mini Speaker nirkabel bersuara lantang dengan perlindungan tahan air IPX7 dan desain mudah dibawa ke mana saja.",
-    "image": "/products/Gadget_Mini Speaker.png",
+    "image": "/products/Gadget_Mini_Speaker.png",
     "tags": ["impulsive", "cheap"]
   },
   {
@@ -80,7 +80,7 @@
     "rating": 4.8,
     "reviewCount": 540,
     "description": "Sketch Book kertas tebal 200gsm cocok untuk pensil, spidol, dan cat air ringan. Cocok untuk seniman dan desainer.",
-    "image": "/products/Hobby_Sketch Book.png",
+    "image": "/products/Hobby_Sketch_Book.png",
     "tags": ["useful", "cheap"]
   },
   {
@@ -104,7 +104,7 @@
     "rating": 4.9,
     "reviewCount": 620,
     "description": "Acrylic Paint cat akrilik pigmen pekat 24 warna yang mudah dicampur untuk melukis di kanvas, kayu, atau kain.",
-    "image": "/products/Hobby_Acrylic Paint.png",
+    "image": "/products/Hobby_Acrylic_Paint.png",
     "tags": ["useful", "desirable"]
   },
   {
@@ -128,7 +128,7 @@
     "rating": 4.6,
     "reviewCount": 370,
     "description": "Crochet Kit paket merajut pemula lengkap dengan benang wol, jarum hakpen, dan buku panduan instruksi.",
-    "image": "/products/Hobby_Croche Kit.png",
+    "image": "/products/Hobby_Croche_Kit.png",
     "tags": ["novelty", "cheap"]
   },
   {
@@ -140,7 +140,7 @@
     "rating": 4.8,
     "reviewCount": 710,
     "description": "LEGO-style Building Set miniatur bangunan artistik balok rakitan mikro yang melatih ketelitian hobi merakit.",
-    "image": "/products/Hobby_Brick Minature.png",
+    "image": "/products/Hobby_Brick_Minature.png",
     "tags": ["novelty", "impulsive"]
   },
   {
@@ -152,7 +152,7 @@
     "rating": 4.7,
     "reviewCount": 480,
     "description": "Trading Card Binder album penyimpanan kartu koleksi dengan slot bening proteksi UV dan bahan sintetis kuat.",
-    "image": "/products/Hobby_Card Organizer.png",
+    "image": "/products/Hobby_Card_Organizer.png",
     "tags": ["useful", "cheap"]
   },
   {
@@ -164,7 +164,7 @@
     "rating": 4.8,
     "reviewCount": 950,
     "description": "Mini Camera digital saku berdesain retro dengan foto HD, filter warna aesthetic, dan slot kartu MicroSD.",
-    "image": "/products/Hobby_Mini Camera.png",
+    "image": "/products/Hobby_Mini_Camera.png",
     "tags": ["novelty", "desirable"]
   },
   {

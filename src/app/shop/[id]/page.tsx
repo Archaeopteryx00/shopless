@@ -8,7 +8,8 @@ import { useRepositories } from '@/infrastructure/db/RepositoryContext';
 import { ProductImage } from '@/presentation/components/marketplace/ProductImage';
 import { formatIDR } from '@/presentation/components/marketplace/ProductCard';
 import { Toast } from '@/presentation/components/common/Toast';
-import { ArrowLeft, Heart, Star, ShoppingCart, Plus, Minus, Tag, Check } from 'lucide-react';
+import { ProductDetailSkeleton } from '@/presentation/components/common/Skeletons';
+import { ArrowLeft, Heart, Star, ShoppingCart, Plus, Minus, Tag, Check, ArrowRight, Share2 } from 'lucide-react';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -21,11 +22,19 @@ export default function ProductDetailPage() {
 
   const product = getProductById(productId);
 
+  const [isLoading, setIsLoading] = React.useState(true);
   const [quantity, setQuantity] = useState(1);
   const [whyWanted, setWhyWanted] = useState<string>('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<'success' | 'wishlist'>('success');
   const [addState, setAddState] = useState<'idle' | 'adding' | 'added'>('idle');
+  const [buyNowState, setBuyNowState] = useState<'idle' | 'processing'>('idle');
+
+  React.useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, [productId]);
 
   const handleBack = () => {
     if (typeof window !== 'undefined' && window.history.length > 2) {
@@ -34,6 +43,10 @@ export default function ProductDetailPage() {
       router.push('/shop');
     }
   };
+
+  if (isLoading) {
+    return <ProductDetailSkeleton />;
+  }
 
   if (!product) {
     return (
@@ -69,11 +82,49 @@ export default function ProductDetailPage() {
     setTimeout(() => setAddState('idle'), 1500);
   };
 
+  const handleBuyNow = async () => {
+    if (buyNowState !== 'idle') return;
+    setBuyNowState('processing');
+    await cartRepo.addItem({
+      productId: product.id,
+      quantity,
+      whyWanted: whyWanted || undefined,
+    });
+    router.push('/cart?checkout=true');
+  };
+
   const handleToggleWishlist = async () => {
     const isNowSaved = await toggleWishlist(product.id);
     setToastType('wishlist');
     setToastMessage(isNowSaved ? 'Disimpan ke Wishlist' : 'Dihapus dari Wishlist');
     setTimeout(() => setToastMessage(null), 2500);
+  };
+
+  const handleShareProduct = async () => {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: product.name,
+          text: product.name,
+          url,
+        });
+        return;
+      } catch (err) {
+        if ((err as Error).name === 'AbortError') return;
+      }
+    }
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(url);
+        setToastType('success');
+        setToastMessage('Link produk disalin');
+        setTimeout(() => setToastMessage(null), 2500);
+      } catch (err) {
+        console.error('Failed to copy product link:', err);
+      }
+    }
   };
 
   const whyOptions = [
@@ -85,10 +136,10 @@ export default function ProductDetailPage() {
   ];
 
   return (
-    <div className="flex flex-col gap-5 pb-8 animate-fadeIn">
+    <div className="flex flex-col gap-5 pb-28 animate-fadeIn">
       <Toast message={toastMessage || ''} type={toastType} isVisible={!!toastMessage} />
 
-      {/* Top Header Navigation */}
+      {/* Top Header Navigation: [← Kembali] ... [Share] [Wishlist] */}
       <div className="flex items-center justify-between">
         <button
           type="button"
@@ -98,19 +149,33 @@ export default function ProductDetailPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali
         </button>
 
-        <button
-          type="button"
-          onClick={handleToggleWishlist}
-          className={`px-3 py-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all ${
-            isWishlisted(product.id)
-              ? 'bg-rose-50 text-rose-600 border-rose-200 shadow-xs'
-              : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 shadow-xs'
-          }`}
-          aria-label="Wishlist"
-        >
-          <Heart className={`w-4 h-4 ${isWishlisted(product.id) ? 'fill-current text-rose-600' : ''}`} />
-          <span>{isWishlisted(product.id) ? 'Tersimpan' : 'Simpan'}</span>
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Share Button */}
+          <button
+            type="button"
+            onClick={handleShareProduct}
+            className="p-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-slate-900 shadow-xs transition-colors flex items-center justify-center"
+            aria-label="Bagikan produk"
+            title="Bagikan produk"
+          >
+            <Share2 className="w-4 h-4" />
+          </button>
+
+          {/* Wishlist Button */}
+          <button
+            type="button"
+            onClick={handleToggleWishlist}
+            className={`px-3 py-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              isWishlisted(product.id)
+                ? 'bg-rose-50 text-rose-600 border-rose-200 shadow-xs'
+                : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 shadow-xs'
+            }`}
+            aria-label="Wishlist"
+          >
+            <Heart className={`w-4 h-4 ${isWishlisted(product.id) ? 'fill-current text-rose-600' : ''}`} />
+            <span>{isWishlisted(product.id) ? 'Tersimpan' : 'Simpan'}</span>
+          </button>
+        </div>
       </div>
 
       {/* Product Image */}
@@ -119,6 +184,7 @@ export default function ProductDetailPage() {
           category={product.category}
           name={product.name}
           image={product.image}
+          priority={true}
           className={`w-full h-full shadow-sm transition-transform duration-300 ${
             addState === 'adding' ? 'animate-imagePulse scale-105' : ''
           }`}
@@ -199,9 +265,10 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
-        {/* Quantity and Add to Cart Action */}
-        <div className="flex items-center gap-3 mt-2">
-          <div className="flex items-center bg-white border border-slate-200 rounded-lg p-1 shadow-xs">
+        {/* Quantity Selector */}
+        <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs mt-1">
+          <span className="text-xs font-bold text-slate-800">Jumlah</span>
+          <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg p-0.5">
             <button
               type="button"
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -220,37 +287,61 @@ export default function ProductDetailPage() {
               <Plus className="w-3.5 h-3.5" />
             </button>
           </div>
-
-          <button
-            type="button"
-            disabled={addState !== 'idle'}
-            onClick={handleAddToCart}
-            className={`flex-1 font-bold py-3.5 px-4 rounded-lg shadow-md flex items-center justify-center gap-2 text-xs transition-all ${
-              addState === 'added'
-                ? 'bg-emerald-600 text-white'
-                : addState === 'adding'
-                ? 'bg-blue-700 text-white opacity-90 cursor-wait'
-                : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white'
-            }`}
-          >
-            {addState === 'added' ? (
-              <>
-                <Check className="w-4 h-4 text-white" />
-                <span>Ditambahkan</span>
-              </>
-            ) : addState === 'adding' ? (
-              <>
-                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                <span>Menambahkan...</span>
-              </>
-            ) : (
-              <>
-                <ShoppingCart className="w-4 h-4" />
-                <span>Tambah ke Keranjang</span>
-              </>
-            )}
-          </button>
         </div>
+      </div>
+
+      {/* Sticky Mobile Action Bar */}
+      <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-40 bg-white border-t border-slate-200 p-3 shadow-lg flex items-center gap-2.5">
+        {/* Secondary: + Keranjang */}
+        <button
+          type="button"
+          disabled={addState !== 'idle'}
+          onClick={handleAddToCart}
+          className={`flex-1 font-semibold py-3 px-3 rounded-lg border transition-all flex items-center justify-center gap-1.5 text-xs ${
+            addState === 'added'
+              ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+              : addState === 'adding'
+              ? 'bg-slate-100 text-slate-500 border-slate-200 cursor-wait'
+              : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
+          }`}
+        >
+          {addState === 'added' ? (
+            <>
+              <Check className="w-4 h-4 text-emerald-600" />
+              <span>✓ Ditambahkan</span>
+            </>
+          ) : addState === 'adding' ? (
+            <>
+              <span className="w-3.5 h-3.5 border-2 border-slate-400 border-t-slate-800 rounded-full animate-spin" />
+              <span>Menambahkan...</span>
+            </>
+          ) : (
+            <>
+              <ShoppingCart className="w-4 h-4 text-slate-600" />
+              <span>+ Keranjang</span>
+            </>
+          )}
+        </button>
+
+        {/* Primary: Beli Sekarang */}
+        <button
+          type="button"
+          disabled={buyNowState !== 'idle'}
+          onClick={handleBuyNow}
+          className="flex-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-75 disabled:cursor-wait text-white font-bold py-3 px-3 rounded-lg shadow-md flex items-center justify-center gap-1.5 text-xs tracking-wide transition-all"
+        >
+          {buyNowState === 'processing' ? (
+            <>
+              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span>Memproses...</span>
+            </>
+          ) : (
+            <>
+              <span>Beli Sekarang</span>
+              <ArrowRight className="w-4 h-4" />
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
