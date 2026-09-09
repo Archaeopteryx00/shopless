@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Heart, Star } from 'lucide-react';
 import { Product } from '@/domain/models/Product';
 import { ProductImage } from './ProductImage';
@@ -25,14 +25,37 @@ export function ProductCard({
   onToggleWishlist,
   priority = false,
 }: ProductCardProps) {
+  const router = useRouter();
+
   const discountPercent = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null;
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // If user clicked wishlist button or an inner interactive element, do not navigate
+    if ((e.target as HTMLElement).closest('button')) {
+      return;
+    }
+    router.push(`/shop/${product.id}`);
+  };
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onToggleWishlist?.(product.id);
+  };
+
   return (
-    <Link
-      href={`/shop/${product.id}`}
-      className="group relative card-marketplace p-2.5 flex flex-col justify-between transition-all duration-200 hover:shadow-md hover:border-slate-300 block select-none h-full"
+    <div
+      onClick={handleCardClick}
+      className="group relative card-marketplace p-2.5 flex flex-col justify-between transition-all duration-150 active:scale-[0.98] active:bg-slate-50 cursor-pointer select-none h-full touch-manipulation"
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          router.push(`/shop/${product.id}`);
+        }
+      }}
     >
       {/* Discount Badge */}
       {discountPercent && (
@@ -44,14 +67,10 @@ export function ProductCard({
       {/* Wishlist Toggle Button */}
       <button
         type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          onToggleWishlist?.(product.id);
-        }}
-        className={`absolute top-3 right-3 z-30 p-1.5 rounded-full transition-all duration-200 active:scale-125 ${
+        onClick={handleWishlistClick}
+        className={`absolute top-3 right-3 z-30 p-2 rounded-full transition-all duration-200 active:scale-125 touch-manipulation ${
           isWishlisted
-            ? 'bg-rose-50 text-rose-600 border border-rose-200'
+            ? 'bg-rose-50 text-rose-600 border border-rose-200 shadow-xs'
             : 'bg-white/90 text-slate-400 hover:text-rose-500 border border-slate-200 shadow-xs'
         }`}
         aria-label="Simpan Wishlist"
@@ -102,6 +121,6 @@ export function ProductCard({
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
