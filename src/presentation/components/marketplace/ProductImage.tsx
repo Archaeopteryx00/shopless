@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Laptop, BookOpen, Coffee, Shirt, Sparkles, Package } from 'lucide-react';
 import { ProductCategory } from '@/domain/models/Product';
 
@@ -9,9 +9,12 @@ interface ProductImageProps {
   name: string;
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  image?: string;
 }
 
-export function ProductImage({ category, name, className = '', size = 'md' }: ProductImageProps) {
+export function ProductImage({ category, name, className = '', size = 'md', image }: ProductImageProps) {
+  const [imageError, setImageError] = useState(false);
+
   const getCategoryGradient = (cat: ProductCategory) => {
     switch (cat) {
       case 'Tech':
@@ -46,6 +49,20 @@ export function ProductImage({ category, name, className = '', size = 'md' }: Pr
         return <Package className={iconClass} />;
     }
   };
+
+  if (image && !imageError) {
+    return (
+      <div className={`relative overflow-hidden rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center ${className}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          onError={() => setImageError(true)}
+        />
+      </div>
+    );
+  }
 
   return (
     <div

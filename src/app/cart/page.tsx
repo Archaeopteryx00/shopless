@@ -176,6 +176,7 @@ export default function CartPage() {
                   <ProductImage
                     category={product.category}
                     name={product.name}
+                    image={product.image}
                     className="w-full h-full"
                     size="sm"
                   />

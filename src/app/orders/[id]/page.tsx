@@ -213,6 +213,7 @@ export default function OrderDetailPage() {
                 <ProductImage
                   category={item.category as any}
                   name={item.name}
+                  image={item.image}
                   className="w-full h-full object-cover"
                   size="sm"
                 />

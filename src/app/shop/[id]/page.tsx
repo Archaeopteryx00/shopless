@@ -118,6 +118,7 @@ export default function ProductDetailPage() {
         <ProductImage
           category={product.category}
           name={product.name}
+          image={product.image}
           className={`w-full h-full shadow-sm transition-transform duration-300 ${
             addState === 'adding' ? 'animate-imagePulse scale-105' : ''
           }`}

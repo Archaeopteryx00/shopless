@@ -56,6 +56,7 @@ export function ProductCard({ product, isWishlisted = false, onToggleWishlist }:
           <ProductImage
             category={product.category}
             name={product.name}
+            image={product.image}
             className="w-full h-full"
             size="md"
           />

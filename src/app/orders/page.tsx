@@ -162,6 +162,7 @@ export default function OrdersPage() {
                       <ProductImage
                         category={firstItem.category as any}
                         name={firstItem.name}
+                        image={firstItem.image}
                         className="w-full h-full object-cover"
                         size="sm"
                       />
