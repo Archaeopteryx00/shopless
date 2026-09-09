@@ -36,13 +36,8 @@ export default function ProductDetailPage() {
 
   const product = getProductById(productId);
 
-  const [isLoading, setIsLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => setIsLoading(false), 300);
-    return () => clearTimeout(timer);
-  }, [productId]);
+  // Instant render when product is available from static catalog
+  const isLoading = !product;
 
   const handleBack = () => {
     if (typeof window !== 'undefined' && window.history.length > 2) {
@@ -84,13 +79,34 @@ export default function ProductDetailPage() {
 
   const handleShareProduct = async () => {
     const url = getPublicProductShareUrl(product.id);
+    const shareText = `${product.name} - ${formatIDR(product.price)} (Belanja di Shopless)`;
+
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
-        await navigator.share({
+        const shareData: ShareData = {
           title: product.name,
-          text: product.name,
+          text: shareText,
           url,
-        });
+        };
+
+        // Try to attach product image file if supported by browser/OS
+        if (typeof fetch !== 'undefined' && product.image && navigator.canShare) {
+          try {
+            const imageRes = await fetch(product.image);
+            if (imageRes.ok) {
+              const blob = await imageRes.blob();
+              const ext = product.image.endsWith('.png') ? 'png' : 'jpg';
+              const file = new File([blob], `${product.id}.${ext}`, { type: blob.type || 'image/png' });
+              if (navigator.canShare({ files: [file] })) {
+                shareData.files = [file];
+              }
+            }
+          } catch {
+            // Fallback gracefully to sharing text & URL
+          }
+        }
+
+        await navigator.share(shareData);
         return;
       } catch (err) {
         if ((err as Error).name === 'AbortError') return;
