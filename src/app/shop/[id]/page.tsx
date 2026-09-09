@@ -224,32 +224,9 @@ export default function ProductDetailPage() {
           {product.description}
         </p>
 
-        {/* Motivation Prompt: Kenapa tertarik sama barang ini? */}
-        <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs mt-1">
-          <label className="text-xs font-bold text-slate-800 block mb-2">
-            Kenapa tertarik sama barang ini? <span className="text-slate-400 font-normal">(opsional)</span>
-          </label>
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {whyOptions.map((option) => (
-              <button
-                key={option}
-                type="button"
-                onClick={() => setWhyWanted(whyWanted === option ? '' : option)}
-                className={`text-[11px] px-3 py-1.5 rounded-lg border transition-all ${
-                  whyWanted === option
-                    ? 'bg-blue-600 text-white border-blue-600 font-medium shadow-xs'
-                    : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300'
-                }`}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Quantity Selector */}
         <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs mt-1">
-          <span className="text-xs font-bold text-slate-800">Jumlah</span>
+          <span className="text-xs font-bold text-slate-800">Jumlah Pembelian</span>
           <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg p-0.5">
             <button
               type="button"
@@ -268,6 +245,31 @@ export default function ProductDetailPage() {
             >
               <Plus className="w-3.5 h-3.5" />
             </button>
+          </div>
+        </div>
+
+        {/* Optional Shopping Intention Prompt */}
+        <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
+          <div className="flex items-center justify-between mb-2">
+            <label className="text-xs font-bold text-slate-800">
+              Alasan Tertarik <span className="text-slate-400 font-normal text-[10px]">(opsional untuk analisis belanja)</span>
+            </label>
+          </div>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {whyOptions.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setWhyWanted(whyWanted === option ? '' : option)}
+                className={`text-[11px] px-3 py-1.5 rounded-lg border transition-all ${
+                  whyWanted === option
+                    ? 'bg-blue-600 text-white border-blue-600 font-semibold shadow-xs scale-[1.02]'
+                    : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
           </div>
         </div>
 

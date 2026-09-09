@@ -16,7 +16,7 @@ export function ProductDetailActionBar() {
   if (!isProductDetail) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50 bg-white border-t border-slate-200 p-3 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] flex items-center gap-2.5">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-3 py-2 max-w-md mx-auto shadow-lg flex items-center gap-2.5">
       {/* Secondary: + Keranjang */}
       <button
         type="button"
@@ -67,6 +67,6 @@ export function ProductDetailActionBar() {
           </>
         )}
       </button>
-    </div>
+    </nav>
   );
 }

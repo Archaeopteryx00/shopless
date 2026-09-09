@@ -42,10 +42,10 @@ export function PwaInstallPrompt() {
     setIsIOS(isIosDevice);
 
     if (isIosDevice) {
-      // Show prompt banner for iOS after 2 seconds delay
+      // Show prompt banner for iOS after 15 seconds delay
       const timer = setTimeout(() => {
         setIsVisible(true);
-      }, 2000);
+      }, 15000);
       return () => clearTimeout(timer);
     }
 
@@ -61,7 +61,11 @@ export function PwaInstallPrompt() {
           return;
         }
       }
-      setIsVisible(true);
+      
+      // Delay showing prompt for 15 seconds so user can browse peacefully first
+      setTimeout(() => {
+        setIsVisible(true);
+      }, 15000);
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -99,7 +103,7 @@ export function PwaInstallPrompt() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-16 left-0 right-0 z-40 max-w-md mx-auto px-3 pb-2 animate-fadeIn pointer-events-auto">
+    <div className="fixed top-3 left-0 right-0 z-50 max-w-md mx-auto px-3 animate-fadeIn pointer-events-auto">
       <div className="bg-white border border-slate-200 rounded-xl p-3 shadow-xl flex flex-col gap-2 relative">
         <button
           type="button"
